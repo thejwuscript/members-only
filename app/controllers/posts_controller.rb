@@ -10,6 +10,13 @@ class PostsController < ApplicationController
   end
 
   def create
+    @post = current_user.posts.build(post_params)
+
+    if @post.save
+      redirect_to root_path
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
@@ -19,6 +26,10 @@ class PostsController < ApplicationController
       flash[:error] = "You must be logged in to create a new post."
       redirect_to root_path
     end
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :body)
   end
 
 end

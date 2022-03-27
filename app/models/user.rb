@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :posts
-  
-  validates :username, presence: true, uniqueness: true, length: { in: 6..12 }
+
+  def username
+    email.split('@')[0].capitalize
+  end
 end
